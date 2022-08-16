@@ -1,5 +1,3 @@
-const { response } = require("express");
-
 const $backBtn = document.querySelector('#back-btn');
 const $pizzaName = document.querySelector('#pizza-name');
 const $createdBy = document.querySelector('#created-by');
@@ -11,14 +9,16 @@ const $newCommentForm = document.querySelector('#new-comment-form');
 
 let pizzaId;
 
-const getPizza = () => {
+function getPizza() {
+  // get id of pizza
   const searchParams = new URLSearchParams(document.location.search.substring(1));
   const pizzaId = searchParams.get('id');
 
+  // get pizzaInfo
   fetch(`/api/pizzas/${pizzaId}`)
     .then(response => {
-      if(!response.ok){
-        throw new Error({ message: 'Oh shoot! Something went wrong!'});
+      if (!response.ok) {
+        throw new Error({ message: 'Something went wrong!' });
       }
 
       return response.json();
@@ -26,11 +26,10 @@ const getPizza = () => {
     .then(printPizza)
     .catch(err => {
       console.log(err);
-      alert('Cannot find pizza with this Id! We are taking you back.');
+      alert('Cannot find a pizza with this id! Taking you back.');
       window.history.back();
     });
 }
-
 
 function printPizza(pizzaData) {
   console.log(pizzaData);
